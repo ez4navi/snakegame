@@ -44,7 +44,7 @@ function drawGame() {
     ctx.drawImage(foodImg, food.x, food.y);
 
     for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = i == 0? 'green' : 'red';
         ctx.fillRect(snake[i].x, snake[i].y, box, box);
     }
 
@@ -55,7 +55,21 @@ function drawGame() {
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
 
-    snake.pop();
+    if (snakeX == food.x && snakeY == food.y) {
+        score++;
+        food = {
+            x: Math.floor((Math.random() * 17 + 1)) * box,
+            y: Math.floor((Math.random() * 15 + 3)) * box,
+        };
+
+    } else {
+        snake.pop();
+    }
+
+    if (snakeX < box || snakeX > box * 17
+        || snakeY < box * 3 || snakeY > box * 17) {
+            clearInterval(game);
+        }
 
     switch(dir) {
         case 'left': snakeX -= box;
