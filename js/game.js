@@ -22,6 +22,22 @@ snake[0] = {
     y: 10 * box,
 };
 
+document.addEventListener('keydown', direction);
+
+let dir; 
+
+function direction(event) {
+    if (event.keyCode == 37 && dir != 'right') {
+        dir = 'left';
+    } else if (event.keyCode == 38 && dir != 'down') {
+        dir = 'up';
+    } else if (event.keyCode == 39 && dir != 'left') {
+        dir = 'right';
+    } else if (event.keyCode == 40 && dir != 'up') {
+        dir = 'down';
+    }
+}
+
 function drawGame() {
     ctx.drawImage(ground, 0, 0);
 
@@ -31,6 +47,33 @@ function drawGame() {
         ctx.fillStyle = 'green';
         ctx.fillRect(snake[i].x, snake[i].y, box, box);
     }
+
+    ctx.fillStyle = 'white';
+    ctx.font = '50px Arial';
+    ctx.fillText(score, box * 2.5, box * 1.7);
+
+    let snakeX = snake[0].x;
+    let snakeY = snake[0].y;
+
+    snake.pop();
+
+    switch(dir) {
+        case 'left': snakeX -= box;
+        break;
+        case 'right': snakeX += box;
+        break;
+        case 'up': snakeY -= box;
+        break;
+        case 'down': snakeY += box;
+        break;
+    }
+
+    let newHead = {
+        x: snakeX,
+        y: snakeY
+    };
+
+    snake.unshift(newHead);
 }
 
 let game = setInterval(drawGame, 100);
